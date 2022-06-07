@@ -1,0 +1,14 @@
+# Builder
+FROM golang:1.17.0-alpine as builder
+
+RUN mkdir /survey
+COPY  . /survey
+WORKDIR /survey/app
+
+RUN apk add --no-cache git mercurial \
+    && go get -d -v\
+    && apk del git mercurial 
+
+RUN apk add build-base
+
+CMD ["go", "run", "main.go"]

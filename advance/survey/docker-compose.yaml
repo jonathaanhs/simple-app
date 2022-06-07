@@ -1,0 +1,25 @@
+version: "3.9"
+
+networks:
+  survey:
+    driver: bridge
+
+services:
+  survey_postgres:
+    container_name: survey_postgres
+    image: postgres:alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: survey
+      POSTGRES_USER: survey
+      POSTGRES_PASSWORD: survey
+    networks:
+      - survey
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U survey"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
